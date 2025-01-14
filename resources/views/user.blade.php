@@ -38,7 +38,7 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark sticky-top">
         <div class="container">
-            <a href="{{ route('dashboard') }}" class="navbar-brand mb-0 h1">
+            <a href="{{ route('user') }}" class="navbar-brand mb-0 h1">
                 <img src="{{ Vite::asset('resources/images/llogo.png') }}" alt="Gambar" width="55" height="70">
             </a>
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse"

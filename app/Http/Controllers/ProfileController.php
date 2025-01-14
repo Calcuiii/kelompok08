@@ -10,7 +10,7 @@ class ProfileController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         $pageTitle = 'Profile';
         return view('profile', ['pageTitle' => $pageTitle]);

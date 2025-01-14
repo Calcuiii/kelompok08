@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Belanja</title>
+    <title>{{ $pageTitle }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
+        /* Basic CSS for layout */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f9f9f9;
@@ -33,6 +35,7 @@
             margin: 30px auto;
             padding: 0 15px;
         }
+        
         .navbar.navbar-dark {
             background-color: rgb(110, 108, 71);
             color: white;
@@ -98,51 +101,49 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-md navbar-dark sticky-top" style="background-color: rgb(110, 108, 71);">
+    <nav class="navbar navbar-expand-md navbar-dark sticky-top">
         <div class="container">
-            <a href="#" class="navbar-brand mb-0 h1">
-                <img src="path/to/logo.png" alt="Logo" width="55" height="70">
+            <a href="{{ route('dashboard') }}" class="navbar-brand mb-0 h1">
+                <img src="{{ Vite::asset('resources/images/llogo.png') }}" alt="Logo" width="55" height="70">
             </a>
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav flex-row flex-wrap">
                     <li class="nav-item col-2 col-md-auto">
-                        <a href="#" class="nav-link">Shopping</a>
-                    </li>
-                    <li class="nav-item col-2 col-md-auto">
-                        <a href="{{ route('profile') }}" class="nav-link">My Profile</a>
+                        <a href="{{ route('shopping') }}" class="nav-link">Shopping</a>
                     </li>
                 </ul>
+                <div class="d-flex ms-auto align-items-center">
+                    <a href="{{ route('profile') }}" class="btn btn-outline-light my-2 ms-md-auto">
+                        <i class="bi-person-circle me-1"></i>My Profile
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Content -->
     <div class="container">
-        <h1 class="text-center my-4">Pilih Produk</h1>
-        <form action="{{ route('shopping.shopping.receipt') }}" method="POST">
-            @csrf
-            <div class="product-list">
-                @foreach ($products as $product)
-                    <div class="product-card">
-                        <img src="{{ asset($product->image) }}" alt="{{ $product->name }}">
-                        <h3>{{ $product->name }}</h3>
-                        <p>{{ $product->description ?? 'Deskripsi tidak tersedia' }}</p>
-                        <div class="price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-
-                        <div class="mb-3">
-                            <input type="hidden" name="products[{{ $product->id }}][id]" value="{{ $product->id }}">
-                            <input type="number" name="products[{{ $product->id }}][quantity]" min="1" value="1" required
-                                class="form-control" style="width: 60px; text-align: center;">
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <button type="submit" class="btn btn-primary">Beli Produk Terpilih</button>
-        </form>
+        <div class="product-list">
+            @foreach ($products as $product)
+                <div class="product-card">
+                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}">
+                    <h3>{{ $product->name }}</h3>
+                    <p>{{ $product->description ?? 'No description available' }}</p>
+                    <div class="price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                    <form action="{{ route('shopping.buy') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="number" name="quantity" min="1" value="1" required
+                            class="form-control" style="width: 60px; text-align: center;">
+                        <button type="submit" class="buy-button">Buy Now</button>
+                    </form>
+                </div>
+            @endforeach
+        </div>
     </div>
 
     <!-- Bootstrap JS and Popper.js -->

@@ -1,0 +1,59 @@
+/* File: public/css/styles.css */
+
+/* Desain Tombol */
+.buy-button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.buy-button:hover {
+    background-color: #218838;
+}
+
+/* Desain untuk kartu produk */
+.product-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 20px;
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.product-card h3 {
+    font-size: 1.5rem;
+    margin: 15px 0;
+}
+
+.product-card p {
+    color: #555;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.product-card .price {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: 500;
+    margin: 10px 0;
+}
+
+/* Layout Grid untuk produk */
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}

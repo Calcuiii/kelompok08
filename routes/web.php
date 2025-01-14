@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Product;
+use App\Http\Controllers\ShoppingController;
+use Illuminate\Support\Facades\Auth;
+
 
 // Halaman utama
 Route::get('/', function () {
@@ -34,8 +36,20 @@ Route::get('/user', function () {
     return view('user');
 })->name('user.view');
 
-Route::get('/shopping', [ProductController::class, 'shopping'])->name('shopping.index');
-Route::post('/shopping', [ProductController::class, 'buy'])->name('shopping.buy');
-Route::get('/shopping/receipt/{id}', [ProductController::class, 'generateReceipt'])->name('shopping.receipt');
+Route::get('/shopping', [ShoppingController::class, 'shopping'])->name('shopping.index');
+Route::post('/shopping', [ShoppingController::class, 'buy'])->name('shopping.buy');
+Route::get('/shopping/shopping.receipt/{id}', [ShoppingController::class, 'generateReceipt'])->name('shopping.receipt');
 
-Route::get('/shopping', [ProductController::class, 'shopping'])->name('shopping');
+Route::get('/shopping', [ShoppingController::class, 'shopping'])->name('shopping');
+
+Route::get('/user', function () {
+    return view('user');
+})->name('user');
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('login'); // Arahkan ke halaman user setelah logout
+})->name('logout');
+
+Route::post('/shopping/buyMultiple', [ShoppingController::class, 'buyMultiple'])->name('shopping.buyMultiple');
+Route::post('/shopping/shopping.receipt', [ShoppingController::class, 'generateReceipt'])->name('shopping.shopping.receipt');

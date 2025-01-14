@@ -1,71 +1,57 @@
+<!-- resources/views/shopping/receipt.blade.php -->
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        .receipt-header {
-            text-align: center;
-        }
-        .product-info {
-            margin-top: 20px;
-        }
-        .product-info img {
-            width: 100px;
-            height: auto;
-        }
-        .product-info table {
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
-        }
-        .product-info th, .product-info td {
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
             border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+            border-radius: 10px;
+            background-color: #f9f9f9;
         }
-        .total {
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .footer {
+            text-align: center;
             margin-top: 20px;
+        }
+        .total-price {
             font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="receipt-header">
+
+<div class="container">
+    <div class="header">
         <h1>Receipt</h1>
-        <p><strong>Order ID:</strong> {{ $order->id }}</p>
-        <p><strong>Date:</strong> {{ $order->created_at->format('d M Y') }}</p>
+        <p>Thank you for your purchase!</p>
     </div>
 
-    <div class="product-info">
-        <h3>Product Details</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><img src="{{ public_path('storage/'.$product->image) }}" alt="Product Image"></td>
-                    <td>{{ $product->name }}</td>
-                    <td>{{ number_format($product->price, 2) }}</td>
-                    <td>{{ $order->quantity }}</td>
-                    <td>{{ number_format($order->total_price, 2) }}</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="order-details">
+        <p><strong>Product Name:</strong> {{ $product->name }}</p>
+        <p><strong>Quantity:</strong> {{ $order->quantity }}</p>
+        <p><strong>Total Price:</strong> Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
     </div>
 
-    <div class="total">
-        <p><strong>Total: </strong>Rp {{ number_format($order->total_price, 2) }}</p>
+    <div class="footer">
+        <p>Visit us again!</p>
     </div>
+</div>
+
 </body>
 </html>

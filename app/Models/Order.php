@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    // Relasi dengan model Product
+    use HasFactory;
+
+    protected $fillable = ['product_id', 'quantity', 'total_price']; // Menambahkan product_id sebagai kolom yang bisa diisi
+
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class); // Relasi belongsTo dengan Product
     }
 }
-
