@@ -124,29 +124,45 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $messages = [
-            'required' => ':Attribute harus diisi.',
-            'email' => 'Isi :attribute dengan format yang benar',
-            'numeric' => 'Isi :attribute dengan angka'
-        ];
-        $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
-            'name' => 'required',
+        // Validasi input
+        $request->validate([
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
+        ]);
 
-        ], $messages);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        // ELOQUENT
+        // Temukan produk berdasarkan ID
         $product = Product::find($id);
-        $product->image = $request->image;
+
+        if (!$product) {
+            return redirect()->route('products.index')->with('error', 'Produk tidak ditemukan.');
+        }
+
+        // Menangani upload gambar
+        if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
+            if ($product->image && file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
+            }
+
+            // Upload gambar baru
+            $image = $request->file('image');
+            $imageName = $image->hashName();
+            $image->move(public_path('images/products'), $imageName);
+
+            // Simpan path gambar baru
+            $product->image = 'images/products/' . $imageName;
+        }
+
+        // Update data produk
         $product->name = $request->name;
         $product->price = $request->price;
         $product->stock = $request->stock;
         $product->save();
-        return redirect()->route('products.index');
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui!');
     }
 
     /**
