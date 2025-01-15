@@ -163,6 +163,7 @@
                 <div class="form-group">
                     <label for="role">Select Role</label>
                     <select name="role" id="role" class="form-control" required>
+                        <option value="" disabled selected>Select your role</option>
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
