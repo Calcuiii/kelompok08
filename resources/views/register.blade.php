@@ -144,21 +144,19 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" name="password" id="password" class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label for="password_confirmation">Confirm Password</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <select name="role" id="role" class="form-control" required>
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
-                    </select>
+                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
+                        required>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Register</button>
@@ -170,6 +168,47 @@
         </div>
     </div>
 
+    <script>
+        // Menampilkan SweetAlert ketika form dikirim
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            fetch(this.action, {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Registrasi Berhasil!',
+                            text: 'Akun Anda telah dibuat, silakan login.',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            window.location.href =
+                            "{{ route('login') }}"; // Mengarahkan ke halaman login
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan!',
+                            text: result.message || 'Coba lagi nanti.'
+                        });
+                    }
+                }).catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan!',
+                        text: 'Coba lagi nanti.'
+                    });
+                });
+        });
+    </script>
+
     @vite('resources/js/app.js')
 </body>
+
 </html>
