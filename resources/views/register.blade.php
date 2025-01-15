@@ -167,7 +167,6 @@
                         <option value="admin">Admin</option>
                     </select>
                 </div>
-            
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>
             
@@ -199,7 +198,7 @@
                             timer: 2000
                         }).then(() => {
                             window.location.href =
-                            "{{ route('login') }}"; // Mengarahkan ke halaman login
+                                "{{ route('login') }}"; // Mengarahkan ke halaman login
                         });
                     } else {
                         Swal.fire({

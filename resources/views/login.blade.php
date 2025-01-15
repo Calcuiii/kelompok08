@@ -146,39 +146,40 @@
             const formData = new FormData(e.target);
 
             fetch(e.target.action, {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.status === 'success') {
-                    // Menampilkan SweetAlert jika login berhasil
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Berhasil!',
-                        text: 'Anda akan diarahkan ke Home.',
-                        showConfirmButton: false,
-                        timer: 2000
-                    }).then(() => {
-                        window.location.href = '/user'; // Arahkan ke dashboard
-                    });
-                } else {
-                    // Menampilkan SweetAlert jika login gagal
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.status === 'success') {
+                        // Menampilkan SweetAlert jika login berhasil
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Berhasil!',
+                            text: 'Anda akan diarahkan...',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            // Redirect sesuai role
+                            window.location.href = result.redirect;
+                        });
+                    } else {
+                        // Menampilkan SweetAlert jika login gagal
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Gagal!',
+                            text: result.message || 'Email atau password salah.',
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
                     Swal.fire({
                         icon: 'error',
-                        title: 'Login Gagal!',
-                        text: result.message || 'Email atau password salah.',
+                        title: 'Terjadi Kesalahan!',
+                        text: 'Coba lagi nanti.',
                     });
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan!',
-                    text: 'Coba lagi nanti.',
                 });
-            });
         });
     </script>
 

@@ -9,6 +9,7 @@ use App\Http\Controllers\ShoppingController;
 use Illuminate\Support\Facades\Auth;
 
 
+
 // Halaman utama
 Route::get('/', function () {
     return view('welcome');
@@ -50,6 +51,21 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect()->route('login'); // Arahkan ke halaman user setelah logout
 })->name('logout');
+
+//Route::post('/shopping/buyMultiple', [ShoppingController::class, 'buyMultiple'])->name('shopping.buyMultiple');
+//Route::post('/shopping/shopping.receipt', [ShoppingController::class, 'generateReceipt'])->name('shopping.shopping.receipt');
+
+// In your routes/web.php
+//Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+//Route::post('/checkout/confirm', [CheckoutController::class, 'confirm'])->name('checkout.confirm');
+//Route::post('/add-to-cart', [CheckoutController::class, 'addToCart'])->name('checkout.addToCart');
+//Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+//Route::get('/checkout/download-pdf', [CheckoutController::class, 'downloadPdf'])->name('checkout.downloadPdf');
+//Route::get('/shopping/shopping.receipt/{id}', [ShoppingController::class, 'generateReceipt'])->name('shopping.receipt');
+
+
+//Route::get('/checkout/downloadPdf', [ShoppingController::class, 'downloadPdf'])->name('downloadPdf');
 
 Route::post('/shopping/buyMultiple', [ShoppingController::class, 'buyMultiple'])->name('shopping.buyMultiple');
 Route::post('/shopping/shopping.receipt', [ShoppingController::class, 'generateReceipt'])->name('shopping.shopping.receipt');

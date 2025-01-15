@@ -35,6 +35,7 @@ class AuthController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user); // Login user ke sistem
 
+
             // Mengarahkan berdasarkan role
             $redirectUrl = $user->role === 'admin' ? '/dashboard' : '/user';
 
@@ -44,6 +45,8 @@ class AuthController extends Controller
                 'message' => 'Login berhasil!',
                 'redirect_url' => $redirectUrl, // Menyertakan URL tujuan
             ]);
+           
+
         }
 
         // Mengembalikan respons error jika email atau password salah
