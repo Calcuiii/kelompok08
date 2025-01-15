@@ -52,8 +52,8 @@ Route::post('/logout', function () {
     return redirect()->route('login'); // Arahkan ke halaman user setelah logout
 })->name('logout');
 
-Route::post('/shopping/buyMultiple', [ShoppingController::class, 'buyMultiple'])->name('shopping.buyMultiple');
-Route::post('/shopping/shopping.receipt', [ShoppingController::class, 'generateReceipt'])->name('shopping.shopping.receipt');
+//Route::post('/shopping/buyMultiple', [ShoppingController::class, 'buyMultiple'])->name('shopping.buyMultiple');
+//Route::post('/shopping/shopping.receipt', [ShoppingController::class, 'generateReceipt'])->name('shopping.shopping.receipt');
 
 // In your routes/web.php
 //Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
@@ -62,7 +62,10 @@ Route::post('/shopping/shopping.receipt', [ShoppingController::class, 'generateR
 //Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 
 //Route::get('/checkout/download-pdf', [CheckoutController::class, 'downloadPdf'])->name('checkout.downloadPdf');
-Route::get('/shopping/shopping.receipt/{id}', [ShoppingController::class, 'generateReceipt'])->name('shopping.receipt');
+//Route::get('/shopping/shopping.receipt/{id}', [ShoppingController::class, 'generateReceipt'])->name('shopping.receipt');
 
 
-Route::get('/checkout/downloadPdf', [ShoppingController::class, 'downloadPdf'])->name('downloadPdf');
+//Route::get('/checkout/downloadPdf', [ShoppingController::class, 'downloadPdf'])->name('downloadPdf');
+
+Route::post('/shopping/buyMultiple', [ShoppingController::class, 'buyMultiple'])->name('shopping.buyMultiple');
+Route::post('/shopping/shopping.receipt', [ShoppingController::class, 'generateReceipt'])->name('shopping.shopping.receipt');

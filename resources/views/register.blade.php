@@ -198,7 +198,7 @@
                             timer: 2000
                         }).then(() => {
                             window.location.href =
-                            "{{ route('login') }}"; // Mengarahkan ke halaman login
+                                "{{ route('login') }}"; // Mengarahkan ke halaman login
                         });
                     } else {
                         Swal.fire({

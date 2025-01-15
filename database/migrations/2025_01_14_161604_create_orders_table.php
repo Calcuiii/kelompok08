@@ -4,21 +4,24 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateOrdersTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();  // Kolom id (Primary key)
-            $table->foreignId('product_id')->constrained()->onDelete('cascade'); // Kolom product_id, mengacu pada kolom id di tabel products
-            $table->integer('quantity'); // Kolom quantity
-            $table->decimal('total_price', 10, 2); // Kolom total_price, dengan format angka desimal
-            $table->timestamps(); // Kolom created_at dan updated_at
+            $table->id();
+            $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('orders');
     }
-}
+};
