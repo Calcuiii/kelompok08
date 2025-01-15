@@ -10,6 +10,6 @@ class Anggota extends Authenticatable
     use HasFactory;
 
     protected $table = 'anggota';
-    protected $fillable = ['name', 'password', 'email' ];    
+    protected $fillable = ['name', 'password', 'email','role'];        
     public $timestamps = true;
 }
