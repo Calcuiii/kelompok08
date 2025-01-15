@@ -35,7 +35,7 @@
             margin: 30px auto;
             padding: 0 15px;
         }
-        
+
         .navbar.navbar-dark {
             background-color: rgb(110, 108, 71);
             color: white;
@@ -86,6 +86,13 @@
             transition: background-color 0.3s;
         }
 
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* Memberikan sedikit ruang antara checkbox dan label */
+        }
+
         .product-card .buy-button:hover {
             background-color: #218838;
         }
@@ -134,21 +141,48 @@
                     <h3>{{ $product->name }}</h3>
                     <p>{{ $product->description ?? 'No description available' }}</p>
                     <div class="price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
-                    <form action="{{ route('shopping.buy') }}" method="POST">
+                    <form id="checkoutForm" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="number" name="quantity" min="1" value="1" required
-                            class="form-control" style="width: 60px; text-align: center;">
-                        <button type="submit" class="buy-button">Buy Now</button>
+                        <input type="number" name="quantity" min="0" value="0" required
+                            class="form-control" style="width: 60px; text-align: center;"
+                            oninput="toggleCheckbox(this)">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check-{{ $product->id }}"
+                                name="checked" {{ old('quantity') > 0 ? 'checked' : '' }} disabled>
+                            <label class="form-check-label" for="check-{{ $product->id }}">
+                                Select
+                            </label>
+                        </div>
                     </form>
                 </div>
             @endforeach
         </div>
+
+        <!-- Checkout Button -->
+        <button id="checkoutBtn" class="btn btn-primary mt-4">Lanjutkan ke Checkout</button>
     </div>
 
-    <!-- Bootstrap JS and Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('checkoutBtn').addEventListener('click', function(event) {
+            event.preventDefault(); // Mencegah form submit biasa
 
+            // Mengirim permintaan AJAX untuk mengunduh PDF
+            fetch("{{ route('downloadPdf') }}")
+                .then(response => response.blob())
+                .then(blob => {
+                    // Membuat elemen <a> untuk mengunduh PDF
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'keranjang.pdf'; // Nama file yang akan diunduh
+                    link.click(); // Menyimulasikan klik untuk mengunduh file
+                })
+                .catch(error => {
+                    console.error('Error downloading PDF:', error); // Menangani error jika ada
+                    alert('Terjadi kesalahan dalam mengunduh PDF.');
+                });
+        });
+    </script>
 </body>
 
 </html>
