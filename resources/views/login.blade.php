@@ -8,6 +8,9 @@
     <title>Login - Skinspire</title>
     @vite('resources/sass/app.scss')
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         * {
             margin: 0;
@@ -113,10 +116,10 @@
             <form id="loginForm" method="POST" action="{{ route('login') }}">
                 @csrf
 
-                <!-- Name -->
+                <!-- Email -->
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" placeholder="Masukkan Name" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Masukkan Email" required>
                 </div>
 
                 <!-- Password -->
@@ -149,21 +152,36 @@
             .then(response => response.json())
             .then(result => {
                 if (result.status === 'success') {
-                    if (result.role === 'admin') {
-                        window.location.href = '/dashboard';
-                    } else if (result.role === 'user') {
-                        window.location.href = '/user';
-                    }
+                    // Menampilkan SweetAlert jika login berhasil
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Berhasil!',
+                        text: 'Anda akan diarahkan ke Home.',
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        window.location.href = '/user'; // Arahkan ke dashboard
+                    });
                 } else {
-                    alert('Login gagal! ' + result.message);
+                    // Menampilkan SweetAlert jika login gagal
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Gagal!',
+                        text: result.message || 'Email atau password salah.',
+                    });
                 }
             })
             .catch(error => {
                 console.error(error);
-                alert('Terjadi kesalahan! Coba lagi nanti.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan!',
+                    text: 'Coba lagi nanti.',
+                });
             });
         });
     </script>
+
     @vite('resources/js/app.js')
 </body>
 
