@@ -35,11 +35,20 @@ class AuthController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user); // Login user ke sistem
 
-            // Mengembalikan respons sukses jika login berhasil
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Login berhasil!',
-            ]);
+            // Mengecek role user dan mengarahkan sesuai role
+            if ($user->role == 'admin') {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Login berhasil! Arahkan ke Dashboard.',
+                    'redirect' => '/dashboard',  // Redirect ke dashboard untuk admin
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Login berhasil! Arahkan ke halaman user.',
+                    'redirect' => '/user',  // Redirect ke halaman user untuk role user
+                ]);
+            }
         }
 
         // Mengembalikan respons error jika email atau password salah
@@ -48,6 +57,7 @@ class AuthController extends Controller
             'message' => 'Email atau password salah!',
         ], 401); // Mengembalikan status error dengan kode 401 (Unauthorized)
     }
+
 
 
 
@@ -72,6 +82,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:anggota,email', // Validasi email
             'password' => 'required|string|min:8|confirmed', // Menambahkan validasi untuk password_confirmation
+            'role' => 'required|in:user,admin',
         ]);
 
         // Jika Validasi Gagal
@@ -87,6 +98,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email, // Simpan email
             'password' => Hash::make($request->password), // Enkripsi password
+            'role' => $request->role,
         ]);
 
         // Mengembalikan respons sukses setelah user berhasil dibuat
