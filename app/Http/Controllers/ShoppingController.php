@@ -27,12 +27,12 @@ class ShoppingController extends Controller
     {
         // Validasi input dari pengguna
         $request->validate([
-            'product_id' => 'required|exists:products,id',  // Pastikan produk ada
+            'id' => 'required|exists:products,id',  // Pastikan produk ada
             'quantity' => 'required|integer|min:1',         // Pastikan quantity adalah integer dan minimal 1
         ]);
 
         // Ambil produk berdasarkan ID yang diberikan
-        $product = Product::find($request->product_id);
+        $product = Product::find($request->id);
 
         // Cek jika stok produk mencukupi
         if ($product->stock < $request->quantity) {

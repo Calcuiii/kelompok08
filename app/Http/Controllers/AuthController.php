@@ -30,25 +30,23 @@ class AuthController extends Controller
         }
 
         // Mencari pengguna berdasarkan email
-        $user = \App\Models\Anggota::where('email', $request->email)->first(); // Cari berdasarkan email
+        $user = \App\Models\Anggota::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user); // Login user ke sistem
 
-            // Mengecek role user dan mengarahkan sesuai role
-            if ($user->role == 'admin') {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Login berhasil! Arahkan ke Dashboard.',
-                    'redirect' => '/dashboard',  // Redirect ke dashboard untuk admin
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Login berhasil! Arahkan ke halaman user.',
-                    'redirect' => '/user',  // Redirect ke halaman user untuk role user
-                ]);
-            }
+
+            // Mengarahkan berdasarkan role
+            $redirectUrl = $user->role === 'admin' ? '/dashboard' : '/user';
+
+            // Mengembalikan respons sukses jika login berhasil
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Login berhasil!',
+                'redirect_url' => $redirectUrl, // Menyertakan URL tujuan
+            ]);
+           
+
         }
 
         // Mengembalikan respons error jika email atau password salah
@@ -78,11 +76,13 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         // Validasi input
+        //dump($request);
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:anggota,email', // Validasi email
-            'password' => 'required|string|min:8|confirmed', // Menambahkan validasi untuk password_confirmation
-            'role' => 'required|in:user,admin',
+            'password' => 'required|string|min:8|confirmed', // Validasi password
+            'role' => 'required|string|in:admin,user', // Validasi role harus admin atau user
         ]);
 
         // Jika Validasi Gagal
@@ -98,12 +98,13 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email, // Simpan email
             'password' => Hash::make($request->password), // Enkripsi password
-            'role' => $request->role,
+            'role' => $request->role, // Simpan role
         ]);
 
         // Mengembalikan respons sukses setelah user berhasil dibuat
         return response()->json([
             'status' => 'success',
+            'user' => $user,
             'message' => 'Registrasi berhasil! Silakan login.',
         ]);
     }
